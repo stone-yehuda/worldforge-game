@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Worldforge</title>
+<meta name="description" content="Worldforge — a science-fantasy real-time strategy game. Free download for Windows; it keeps itself up to date.">
+<meta property="og:title" content="Worldforge">
+<meta property="og:description" content="Magic and machine were made to work together. Four nations went to war over how.">
+<meta property="og:image" content="img/concord.jpg">
+<link rel="icon" href="img/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0b0b0f;
+    --ink-2: #14141b;
+    --text: #ece8df;
+    --muted: #a9a49a;
+    --gold: #dbb262;
+    --gold-hi: #f0cd84;
+    --line: rgba(255,255,255,.1);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--ink); color: var(--text); font: 16px/1.6 Inter, system-ui, sans-serif; }
+  a { color: inherit; }
+
+  .hero {
+    position: relative; min-height: 100vh; display: flex; align-items: flex-end;
+    padding: 0 6vw 12vh; overflow: hidden;
+  }
+  .hero__art {
+    position: absolute; inset: 0; background: url(img/concord.jpg) center 30% / cover no-repeat;
+    transform: scale(1.06); animation: drift 30s ease-in-out infinite alternate;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(11,11,15,.15) 0%, rgba(11,11,15,.2) 40%, rgba(11,11,15,.92) 88%, var(--ink) 100%),
+      linear-gradient(90deg, rgba(11,11,15,.7) 0%, rgba(11,11,15,0) 60%);
+  }
+  @keyframes drift { from { transform: scale(1.06) translateX(0); } to { transform: scale(1.1) translateX(-1.5%); } }
+  @media (prefers-reduced-motion: reduce) { .hero__art { animation: none; } }
+
+  .hero__body { position: relative; z-index: 1; max-width: 640px; }
+  .eyebrow { text-transform: uppercase; letter-spacing: .22em; font-size: 12px; color: var(--gold); font-weight: 600; }
+  h1 {
+    font: 800 clamp(48px, 10vw, 112px)/.95 Cinzel, serif; letter-spacing: .04em; margin: .2em 0 .25em;
+    text-shadow: 0 4px 40px rgba(0,0,0,.6);
+  }
+  .tagline { font-size: clamp(18px, 2.3vw, 22px); color: #ddd8cc; margin: 0 0 32px; max-width: 34ch; }
+
+  .download {
+    display: inline-flex; align-items: center; gap: 12px; text-decoration: none;
+    background: linear-gradient(180deg, var(--gold-hi), var(--gold)); color: #1b1408;
+    font-weight: 600; font-size: 18px; padding: 18px 30px; border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(219,178,98,.25), inset 0 1px 0 rgba(255,255,255,.4);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .download:hover { transform: translateY(-2px); box-shadow: 0 16px 50px rgba(219,178,98,.35), inset 0 1px 0 rgba(255,255,255,.4); }
+  .download:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .download svg { width: 20px; height: 20px; }
+  .meta { margin-top: 14px; font-size: 14px; color: var(--muted); }
+  .meta a { color: var(--text); text-underline-offset: 3px; }
+  #latest:empty { display: none; }
+
+  section { padding: 96px 6vw; }
+  h2 { font: 600 clamp(28px, 4vw, 40px)/1.1 Cinzel, serif; letter-spacing: .03em; margin: 0 0 12px; }
+  .lede { color: var(--muted); max-width: 60ch; margin: 0 0 48px; }
+
+  .factions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .faction {
+    position: relative; min-height: 420px; border-radius: 10px; overflow: hidden;
+    display: flex; align-items: flex-end; padding: 24px; border: 1px solid var(--line);
+    background-size: cover; background-position: center;
+  }
+  .faction::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,15,0) 30%, rgba(11,11,15,.94) 85%); }
+  .faction > div { position: relative; }
+  .faction h3 { font: 600 24px/1.1 Cinzel, serif; margin: 0 0 4px; }
+  .faction .kind { color: var(--gold); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+  .faction p { margin: 10px 0 0; color: #d6d1c6; font-size: 15px; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; counter-reset: s; }
+  .step { background: var(--ink-2); border: 1px solid var(--line); border-radius: 10px; padding: 28px; }
+  .step::before { counter-increment: s; content: counter(s); font: 600 32px Cinzel, serif; color: var(--gold); }
+  .step h3 { margin: 8px 0 6px; font-size: 18px; }
+  .step p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  .note { margin-top: 28px; padding: 18px 22px; border-left: 3px solid var(--gold); background: var(--ink-2); border-radius: 0 8px 8px 0; color: #cfcabf; font-size: 15px; max-width: 760px; }
+
+  footer { padding: 48px 6vw 64px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; }
+
+  @media (max-width: 1000px) { .factions { grid-template-columns: repeat(2, 1fr); } .steps { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .hero { padding: 0 16px 10vh; }
+    section { padding: 64px 16px; }
+    footer { padding: 40px 16px 56px; }
+    .factions { grid-template-columns: 1fr; }
+    .faction { min-height: 300px; }
+    .download { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero__art" role="img" aria-label="The spires of a Concord city under a breaking sky"></div>
+  <div class="hero__body">
+    <div class="eyebrow">A science-fantasy real-time strategy game</div>
+    <h1>Worldforge</h1>
+    <p class="tagline">Magic and machine were made to work together. Four nations went to war over how.</p>
+    <a class="download" href="https://github.com/stone-yehuda/worldforge-game/releases/latest/download/Worldforge-Setup.exe">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+      Download for Windows
+    </a>
+    <div class="meta">Free · Windows 10 &amp; 11 · keeps itself up to date<span id="latest"></span></div>
+  </div>
+</header>
+
+<section id="factions">
+  <h2>Four ways to see the world</h2>
+  <p class="lede">A golden age of enchanted engines ended in catastrophe. Now the Aether is running out, and
+    every nation has its own answer to the question the war is fought over: specialize, or fuse?</p>
+  <div class="factions">
+    <article class="faction" style="background-image:url(img/concord.jpg)">
+      <div><div class="kind">Synergy</div><h3>The Concord</h3>
+      <p>Magic and machine braided together. The balanced hand that can answer anything.</p></div>
+    </article>
+    <article class="faction" style="background-image:url(img/directive.jpg)">
+      <div><div class="kind">Tech supremacy</div><h3>The Directive</h3>
+      <p>Steel, steam and a rigid economy. Order is the weapon.</p></div>
+    </article>
+    <article class="faction" style="background-image:url(img/fervent.jpg)">
+      <div><div class="kind">Magic</div><h3>The Fervent</h3>
+      <p>A volatile swarm that burns bright and hits like a storm, if it lives long enough.</p></div>
+    </article>
+    <article class="faction" style="background-image:url(img/forewarned.jpg)">
+      <div><div class="kind">The wildcard</div><h3>The Forewarned</h3>
+      <p>Sacrifice and experiment, whatever it costs. The dark horse of the war.</p></div>
+    </article>
+  </div>
+</section>
+
+<section id="install">
+  <h2>Install once. Stay current.</h2>
+  <p class="lede">We ship changes constantly. You don't have to chase links: the game checks for updates when you
+    open it, asks first, and downloads only the parts that changed.</p>
+  <div class="steps">
+    <div class="step"><h3>Download the installer</h3><p>A small setup file. No admin rights needed; it installs just for you.</p></div>
+    <div class="step"><h3>Open Worldforge</h3><p>The first launch downloads the game itself, about 650 MB, at full quality.</p></div>
+    <div class="step"><h3>Play. Updates come to you</h3><p>When there's something new, the launcher offers it. Usually a few megabytes.</p></div>
+  </div>
+  <div class="note"><strong>Windows may warn you the first time.</strong> The installer isn't code-signed yet, so
+    SmartScreen says the publisher is unknown. Choose <em>More info</em>, then <em>Run anyway</em>.</div>
+  <p style="margin-top:40px"><a class="download" href="https://github.com/stone-yehuda/worldforge-game/releases/latest/download/Worldforge-Setup.exe">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+    Download for Windows</a></p>
+</section>
+
+<footer>
+  <span>Worldforge is an early prototype, so expect rough edges. Bugs and reactions are welcome.</span>
+  <a href="https://github.com/stone-yehuda/worldforge-game/releases">All builds and release notes</a>
+</footer>
+
+<script>
+  // Show the latest build's name and date. Purely cosmetic: the download link works without it.
+  fetch("https://api.github.com/repos/stone-yehuda/worldforge-game/releases/latest")
+    .then(r => r.ok ? r.json() : null)
+    .then(rel => {
+      if (!rel) return;
+      const when = new Date(rel.published_at).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+      document.getElementById("latest").textContent = " · latest build " + when;
+    })
+    .catch(() => {});
+</script>
+</body>
+</html>
