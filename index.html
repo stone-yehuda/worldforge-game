@@ -4,159 +4,273 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Worldforge</title>
-<meta name="description" content="Worldforge — a science-fantasy real-time strategy game. Free download for Windows; it keeps itself up to date.">
+<meta name="description" content="Worldforge — a science-fantasy real-time strategy game. Four nations, one question: specialize, or fuse? Free for Windows; it keeps itself up to date.">
 <meta property="og:title" content="Worldforge">
 <meta property="og:description" content="Magic and machine were made to work together. Four nations went to war over how.">
-<meta property="og:image" content="img/concord.jpg">
+<meta property="og:image" content="https://stone-yehuda.github.io/worldforge-game/img/concord.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0b0b0f;
-    --ink-2: #14141b;
-    --text: #ece8df;
-    --muted: #a9a49a;
-    --gold: #dbb262;
-    --gold-hi: #f0cd84;
-    --line: rgba(255,255,255,.1);
+    --ink: #07070a;
+    --ink-2: #111117;
+    --text: #efe9dc;
+    --muted: #b3ac9f;
+    --gold: #e0b65e;
+    --gold-hi: #ffe2a0;
+    --gold-lo: #9c7426;
+    --line: rgba(224,182,94,.22);
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--ink); color: var(--text); font: 16px/1.6 Inter, system-ui, sans-serif; }
+  body { margin: 0; background: var(--ink); color: var(--text); font: 16px/1.6 Inter, system-ui, sans-serif; overflow-x: hidden; }
   a { color: inherit; }
+  img { display: block; max-width: 100%; }
 
-  .hero {
-    position: relative; min-height: 100vh; display: flex; align-items: flex-end;
-    padding: 0 6vw 12vh; overflow: hidden;
+  /* ---------- hero: the four nations cross-fade behind the title ---------- */
+  .hero { position: relative; height: 100svh; min-height: 640px; max-height: 1100px; display: grid; place-items: center; text-align: center; overflow: hidden; }
+  .slides, .slides span { position: absolute; inset: 0; }
+  .slides span {
+    background-size: cover; background-position: center; opacity: 0;
+    animation: slide 32s infinite, kenburns 32s infinite;
   }
-  .hero__art {
-    position: absolute; inset: 0; background: url(img/concord.jpg) center 30% / cover no-repeat;
-    transform: scale(1.06); animation: drift 30s ease-in-out infinite alternate;
-  }
-  .hero::after {
-    content: ""; position: absolute; inset: 0;
+  /* Negative delays start the cycle already on the first painting, never on black. */
+  .slides span:nth-child(1) { background-image: url(img/concord.jpg); animation-delay: -2s; }
+  .slides span:nth-child(2) { background-image: url(img/fervent.jpg); animation-delay: 6s; }
+  .slides span:nth-child(3) { background-image: url(img/directive.jpg); animation-delay: 14s; }
+  .slides span:nth-child(4) { background-image: url(img/forewarned.jpg); animation-delay: 22s; }
+  @keyframes slide { 0% { opacity: 0 } 4% { opacity: 1 } 25% { opacity: 1 } 30% { opacity: 0 } 100% { opacity: 0 } }
+  @keyframes kenburns { 0% { transform: scale(1.12) translate(1.5%, 1%) } 30% { transform: scale(1.02) translate(-1.5%, -1%) } 100% { transform: scale(1.02) } }
+  .hero::before { /* vignette: dark at the edges, the art stays bright in the middle */
+    content: ""; position: absolute; inset: 0; z-index: 1;
     background:
-      linear-gradient(180deg, rgba(11,11,15,.15) 0%, rgba(11,11,15,.2) 40%, rgba(11,11,15,.92) 88%, var(--ink) 100%),
-      linear-gradient(90deg, rgba(11,11,15,.7) 0%, rgba(11,11,15,0) 60%);
+      radial-gradient(ellipse at 50% 45%, rgba(7,7,10,0) 30%, rgba(7,7,10,.55) 75%, rgba(7,7,10,.9) 100%),
+      linear-gradient(180deg, rgba(7,7,10,.35) 0%, rgba(7,7,10,0) 25%, rgba(7,7,10,0) 70%, var(--ink) 100%);
   }
-  @keyframes drift { from { transform: scale(1.06) translateX(0); } to { transform: scale(1.1) translateX(-1.5%); } }
-  @media (prefers-reduced-motion: reduce) { .hero__art { animation: none; } }
-
-  .hero__body { position: relative; z-index: 1; max-width: 640px; }
-  .eyebrow { text-transform: uppercase; letter-spacing: .22em; font-size: 12px; color: var(--gold); font-weight: 600; }
+  #embers { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+  .hero__body { position: relative; z-index: 3; padding: 0 16px; max-width: 980px; }
+  .eyebrow { text-transform: uppercase; letter-spacing: .32em; font-size: 13px; color: var(--gold-hi); font-weight: 600; text-shadow: 0 2px 12px rgba(0,0,0,.8); }
   h1 {
-    font: 800 clamp(48px, 10vw, 112px)/.95 Cinzel, serif; letter-spacing: .04em; margin: .2em 0 .25em;
-    text-shadow: 0 4px 40px rgba(0,0,0,.6);
+    display: inline-block; /* the box must hug the text, or background-clip leaves overflowing letters invisible */
+    font: 900 clamp(34px, 8.4vw, 124px)/.95 "Cinzel Decorative", Cinzel, serif; margin: .12em 0 .18em; white-space: nowrap;
+    padding: 0 .2em; /* the decorative capitals overhang their box; background-clip would cut them off */
+    background: linear-gradient(180deg, #fff6dc 0%, var(--gold-hi) 38%, var(--gold) 62%, var(--gold-lo) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 6px 30px rgba(0,0,0,.85)) drop-shadow(0 0 40px rgba(224,182,94,.25));
   }
-  .tagline { font-size: clamp(18px, 2.3vw, 22px); color: #ddd8cc; margin: 0 0 32px; max-width: 34ch; }
+  .tagline { font: 500 clamp(19px, 2.6vw, 28px)/1.35 Cinzel, serif; margin: 0 auto 38px; max-width: 30ch; text-shadow: 0 2px 18px rgba(0,0,0,.9); }
 
   .download {
-    display: inline-flex; align-items: center; gap: 12px; text-decoration: none;
-    background: linear-gradient(180deg, var(--gold-hi), var(--gold)); color: #1b1408;
-    font-weight: 600; font-size: 18px; padding: 18px 30px; border-radius: 8px;
-    box-shadow: 0 10px 40px rgba(219,178,98,.25), inset 0 1px 0 rgba(255,255,255,.4);
-    transition: transform .15s ease, box-shadow .15s ease;
+    position: relative; display: inline-flex; align-items: center; gap: 14px; text-decoration: none;
+    background: linear-gradient(180deg, var(--gold-hi), var(--gold) 55%, #c4943d); color: #1a1206;
+    font: 700 19px/1 Cinzel, serif; letter-spacing: .08em; text-transform: uppercase;
+    padding: 22px 40px; border-radius: 4px; border: 1px solid #fff1c4;
+    box-shadow: 0 0 0 4px rgba(224,182,94,.18), 0 18px 60px rgba(224,182,94,.35), inset 0 1px 0 rgba(255,255,255,.6);
+    transition: transform .2s ease, box-shadow .2s ease;
+    animation: glow 3.2s ease-in-out infinite;
   }
-  .download:hover { transform: translateY(-2px); box-shadow: 0 16px 50px rgba(219,178,98,.35), inset 0 1px 0 rgba(255,255,255,.4); }
-  .download:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-  .download svg { width: 20px; height: 20px; }
-  .meta { margin-top: 14px; font-size: 14px; color: var(--muted); }
-  .meta a { color: var(--text); text-underline-offset: 3px; }
-  #latest:empty { display: none; }
+  .download:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 0 6px rgba(224,182,94,.25), 0 24px 80px rgba(224,182,94,.5), inset 0 1px 0 rgba(255,255,255,.6); }
+  .download:focus-visible { outline: 2px solid #fff; outline-offset: 6px; }
+  .download svg { width: 22px; height: 22px; }
+  @keyframes glow { 50% { box-shadow: 0 0 0 7px rgba(224,182,94,.12), 0 18px 80px rgba(224,182,94,.5), inset 0 1px 0 rgba(255,255,255,.6); } }
+  .meta { margin-top: 18px; font-size: 14px; color: #d8d2c4; text-shadow: 0 1px 8px rgba(0,0,0,.9); }
+  .scroll-cue { position: absolute; z-index: 3; bottom: 26px; left: 50%; translate: -50% 0; color: var(--gold-hi); opacity: .8; animation: bob 2s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(8px); } }
 
-  section { padding: 96px 6vw; }
-  h2 { font: 600 clamp(28px, 4vw, 40px)/1.1 Cinzel, serif; letter-spacing: .03em; margin: 0 0 12px; }
-  .lede { color: var(--muted); max-width: 60ch; margin: 0 0 48px; }
+  /* ---------- the question ---------- */
+  .question { text-align: center; padding: 64px 16px 24px; }
+  .rule { display: flex; align-items: center; gap: 18px; justify-content: center; color: var(--gold); margin-bottom: 26px; }
+  .rule::before, .rule::after { content: ""; height: 1px; width: min(18vw, 200px); background: linear-gradient(90deg, transparent, var(--gold)); }
+  .rule::after { transform: scaleX(-1); }
+  .question h2 { font: 700 clamp(30px, 5vw, 58px)/1.1 Cinzel, serif; margin: 0 auto 18px; max-width: 18ch; }
+  .question p { color: var(--muted); max-width: 62ch; margin: 0 auto; font-size: 18px; }
 
-  .factions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-  .faction {
-    position: relative; min-height: 420px; border-radius: 10px; overflow: hidden;
-    display: flex; align-items: flex-end; padding: 24px; border: 1px solid var(--line);
-    background-size: cover; background-position: center;
-  }
-  .faction::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,15,0) 30%, rgba(11,11,15,.94) 85%); }
-  .faction > div { position: relative; }
-  .faction h3 { font: 600 24px/1.1 Cinzel, serif; margin: 0 0 4px; }
-  .faction .kind { color: var(--gold); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
-  .faction p { margin: 10px 0 0; color: #d6d1c6; font-size: 15px; }
+  /* ---------- one cinematic band per nation ---------- */
+  .nation { position: relative; min-height: min(100vh, 1000px); display: flex; align-items: center; padding: 120px 6vw; overflow: hidden; isolation: isolate; }
+  .nation__art { position: absolute; inset: -6% 0; z-index: -2; background-size: cover; background-position: center; will-change: transform; }
+  .nation::before { content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(90deg, rgba(7,7,10,.92) 0%, rgba(7,7,10,.72) 38%, rgba(7,7,10,.15) 70%, rgba(7,7,10,.35) 100%),
+                linear-gradient(180deg, var(--ink) 0%, rgba(7,7,10,0) 16%, rgba(7,7,10,0) 84%, var(--ink) 100%); }
+  .nation.right { justify-content: flex-end; text-align: right; }
+  .nation.right::before { background: linear-gradient(270deg, rgba(7,7,10,.92) 0%, rgba(7,7,10,.72) 38%, rgba(7,7,10,.15) 70%, rgba(7,7,10,.35) 100%),
+                linear-gradient(180deg, var(--ink) 0%, rgba(7,7,10,0) 16%, rgba(7,7,10,0) 84%, var(--ink) 100%); }
+  .nation__body { width: min(780px, 100%); }
+  .creed { font: 600 13px/1 Inter, sans-serif; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); }
+  .nation h2 { font: 800 clamp(44px, 7.5vw, 104px)/.95 Cinzel, serif; margin: 14px 0 18px; color: #fff;
+    text-shadow: 0 4px 30px rgba(0,0,0,.8), 0 0 60px color-mix(in srgb, var(--accent) 45%, transparent); }
+  .nation p { font-size: 19px; color: #e4ded2; max-width: 44ch; margin: 0 0 34px; text-shadow: 0 2px 12px rgba(0,0,0,.8); }
+  .nation.right p { margin-left: auto; }
+  .warband { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; max-width: 760px; }
+  .unit { margin: 0; position: relative; aspect-ratio: 3 / 4; border-radius: 4px; overflow: hidden; background: var(--ink-2);
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    box-shadow: 0 14px 40px rgba(0,0,0,.6); transition: transform .25s ease, box-shadow .25s ease, border-color .25s; }
+  .unit img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; transition: transform .5s ease; }
+  .unit figcaption { position: absolute; inset: auto 0 0; padding: 26px 8px 8px; font: 600 12px/1.2 Cinzel, serif; letter-spacing: .04em; text-align: center;
+    background: linear-gradient(180deg, transparent, rgba(7,7,10,.92)); }
+  .unit:hover { transform: translateY(-8px); border-color: var(--accent); box-shadow: 0 22px 50px rgba(0,0,0,.7), 0 0 30px color-mix(in srgb, var(--accent) 50%, transparent); }
+  .unit:hover img { transform: scale(1.07); }
+  .concord { --accent: #f0c46a; }
+  .directive { --accent: #e09a3c; }
+  .fervent { --accent: #ff6b2c; }
+  .forewarned { --accent: #b07cff; }
 
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; counter-reset: s; }
-  .step { background: var(--ink-2); border: 1px solid var(--line); border-radius: 10px; padding: 28px; }
-  .step::before { counter-increment: s; content: counter(s); font: 600 32px Cinzel, serif; color: var(--gold); }
-  .step h3 { margin: 8px 0 6px; font-size: 18px; }
+  /* ---------- install + final call ---------- */
+  .install { padding: 120px 6vw; text-align: center; }
+  .install h2 { font: 700 clamp(30px, 4.5vw, 52px)/1.1 Cinzel, serif; margin: 0 0 14px; }
+  .install .lede { color: var(--muted); max-width: 60ch; margin: 0 auto 56px; font-size: 18px; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; text-align: left; }
+  .step { position: relative; background: linear-gradient(180deg, #15151d, #0e0e14); border: 1px solid var(--line); border-radius: 4px; padding: 34px 28px 28px; }
+  .step b { position: absolute; top: -22px; left: 24px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%;
+    background: var(--ink); border: 1px solid var(--gold); color: var(--gold-hi); font: 700 20px Cinzel, serif; }
+  .step h3 { margin: 4px 0 8px; font: 600 20px Cinzel, serif; }
   .step p { margin: 0; color: var(--muted); font-size: 15px; }
+  .note { max-width: 760px; margin: 36px auto 0; padding: 16px 22px; border: 1px solid var(--line); border-radius: 4px; color: #cfc8ba; font-size: 15px; background: rgba(224,182,94,.05); }
 
-  .note { margin-top: 28px; padding: 18px 22px; border-left: 3px solid var(--gold); background: var(--ink-2); border-radius: 0 8px 8px 0; color: #cfcabf; font-size: 15px; max-width: 760px; }
+  .finale { position: relative; padding: 160px 16px; text-align: center; overflow: hidden; isolation: isolate; }
+  .finale::before { content: ""; position: absolute; inset: 0; z-index: -2; background: url(img/fervent.jpg) center 35% / cover; }
+  .finale::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at center, rgba(7,7,10,.35), rgba(7,7,10,.9) 75%), linear-gradient(180deg, var(--ink), transparent 25%, transparent 75%, var(--ink)); }
+  .finale h2 { font: 800 clamp(34px, 6vw, 72px)/1.05 Cinzel, serif; margin: 0 0 34px; text-shadow: 0 4px 30px rgba(0,0,0,.9); }
 
-  footer { padding: 48px 6vw 64px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; }
+  footer { padding: 40px 6vw 56px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; }
 
-  @media (max-width: 1000px) { .factions { grid-template-columns: repeat(2, 1fr); } .steps { grid-template-columns: 1fr; } }
+  /* ---------- reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .warband .unit.reveal { transition-delay: calc(var(--i) * 90ms); }
+
+  @media (max-width: 900px) {
+    .nation, .nation.right { justify-content: flex-start; text-align: left; padding: 100px 16px; min-height: auto; }
+    .nation::before, .nation.right::before { background: linear-gradient(180deg, var(--ink) 0%, rgba(7,7,10,.45) 30%, rgba(7,7,10,.85) 70%, var(--ink) 100%); }
+    .nation.right p { margin-left: 0; }
+    .warband { grid-template-columns: repeat(3, 1fr); }
+    .steps { grid-template-columns: 1fr; gap: 34px; }
+    .install { padding: 90px 16px; }
+    footer { padding: 36px 16px 48px; }
+  }
   @media (max-width: 560px) {
-    .hero { padding: 0 16px 10vh; }
-    section { padding: 64px 16px; }
-    footer { padding: 40px 16px 56px; }
-    .factions { grid-template-columns: 1fr; }
-    .faction { min-height: 300px; }
-    .download { width: 100%; justify-content: center; }
+    .download { width: 100%; justify-content: center; padding: 20px 14px; font-size: 15px; letter-spacing: .04em; }
+    .warband { grid-template-columns: repeat(2, 1fr); }
+    .warband .unit:nth-child(5) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slides span { animation: none; } .slides span:first-child { opacity: 1; }
+    .download, .scroll-cue { animation: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
   }
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <div class="hero__art" role="img" aria-label="The spires of a Concord city under a breaking sky"></div>
+  <div class="slides" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <canvas id="embers" aria-hidden="true"></canvas>
   <div class="hero__body">
     <div class="eyebrow">A science-fantasy real-time strategy game</div>
     <h1>Worldforge</h1>
     <p class="tagline">Magic and machine were made to work together. Four nations went to war over how.</p>
     <a class="download" href="https://github.com/stone-yehuda/worldforge-game/releases/latest/download/Worldforge-Setup.exe">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-      Download for Windows
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+      Download free for Windows
     </a>
-    <div class="meta">Free · Windows 10 &amp; 11 · keeps itself up to date<span id="latest"></span></div>
+    <div class="meta">Windows 10 &amp; 11 · keeps itself up to date<span id="latest"></span></div>
   </div>
+  <svg class="scroll-cue" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
 </header>
 
-<section id="factions">
-  <h2>Four ways to see the world</h2>
-  <p class="lede">A golden age of enchanted engines ended in catastrophe. Now the Aether is running out, and
-    every nation has its own answer to the question the war is fought over: specialize, or fuse?</p>
-  <div class="factions">
-    <article class="faction" style="background-image:url(img/concord.jpg)">
-      <div><div class="kind">Synergy</div><h3>The Concord</h3>
-      <p>Magic and machine braided together. The balanced hand that can answer anything.</p></div>
-    </article>
-    <article class="faction" style="background-image:url(img/directive.jpg)">
-      <div><div class="kind">Tech supremacy</div><h3>The Directive</h3>
-      <p>Steel, steam and a rigid economy. Order is the weapon.</p></div>
-    </article>
-    <article class="faction" style="background-image:url(img/fervent.jpg)">
-      <div><div class="kind">Magic</div><h3>The Fervent</h3>
-      <p>A volatile swarm that burns bright and hits like a storm, if it lives long enough.</p></div>
-    </article>
-    <article class="faction" style="background-image:url(img/forewarned.jpg)">
-      <div><div class="kind">The wildcard</div><h3>The Forewarned</h3>
-      <p>Sacrifice and experiment, whatever it costs. The dark horse of the war.</p></div>
-    </article>
+<section class="question reveal">
+  <div class="rule">✦</div>
+  <h2>Specialize, or fuse?</h2>
+  <p>A golden age of enchanted engines ended in catastrophe. Now the Aether is running out, the borders are
+    a standoff, and every nation has its own answer to the question the war is fought over.</p>
+</section>
+
+<section id="concord" class="nation concord">
+  <div class="nation__art" style="background-image:url(img/concord.jpg)"></div>
+  <div class="nation__body">
+    <div class="creed reveal">Synergy</div>
+    <h2 class="reveal">The Concord</h2>
+    <p class="reveal">Magic and machine braided together. Runed steel, blessed armour, arc-fire from the line. The balanced hand that can answer anything.</p>
+    <div class="warband">
+      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/concord_arc_caster_1.jpg" alt=""><figcaption>Arc Caster</figcaption></figure>
+      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/concord_plated_cohort_4.jpg" alt=""><figcaption>Plated Cohort</figcaption></figure>
+      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/concord_sunder_hammer_2.jpg" alt=""><figcaption>Sunder Hammer</figcaption></figure>
+      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/concord_concord_shields_3.jpg" alt=""><figcaption>Concord Shields</figcaption></figure>
+      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/concord_arc_volley_3.jpg" alt=""><figcaption>Arc Volley</figcaption></figure>
+    </div>
   </div>
 </section>
 
-<section id="install">
-  <h2>Install once. Stay current.</h2>
-  <p class="lede">We ship changes constantly. You don't have to chase links: the game checks for updates when you
-    open it, asks first, and downloads only the parts that changed.</p>
-  <div class="steps">
-    <div class="step"><h3>Download the installer</h3><p>A small setup file. No admin rights needed; it installs just for you.</p></div>
-    <div class="step"><h3>Open Worldforge</h3><p>The first launch downloads the game itself, about 650 MB, at full quality.</p></div>
-    <div class="step"><h3>Play. Updates come to you</h3><p>When there's something new, the launcher offers it. Usually a few megabytes.</p></div>
+<section id="directive" class="nation directive right">
+  <div class="nation__art" style="background-image:url(img/directive.jpg)"></div>
+  <div class="nation__body">
+    <div class="creed reveal">Tech supremacy</div>
+    <h2 class="reveal">The Directive</h2>
+    <p class="reveal">Brass, steam and a rigid economy. Pike walls, rifle lines and iron engines. Order is the weapon.</p>
+    <div class="warband">
+      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/directive_aegis_line_1.jpg" alt=""><figcaption>Aegis Line</figcaption></figure>
+      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/directive_iron_sentinel_1.jpg" alt=""><figcaption>Iron Sentinel</figcaption></figure>
+      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/directive_bulwark_1.jpg" alt=""><figcaption>Bulwark</figcaption></figure>
+      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/directive_heavy_rifles_2.jpg" alt=""><figcaption>Heavy Rifles</figcaption></figure>
+      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/directive_breach_battery_1.jpg" alt=""><figcaption>Breach Battery</figcaption></figure>
+    </div>
   </div>
-  <div class="note"><strong>Windows may warn you the first time.</strong> The installer isn't code-signed yet, so
+</section>
+
+<section id="fervent" class="nation fervent">
+  <div class="nation__art" style="background-image:url(img/fervent.jpg)"></div>
+  <div class="nation__body">
+    <div class="creed reveal">Magic</div>
+    <h2 class="reveal">The Fervent</h2>
+    <p class="reveal">Faith turned to fire. A volatile swarm that burns bright and hits like a storm, if it lives long enough.</p>
+    <div class="warband">
+      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/fervent_flame_caller_1.jpg" alt=""><figcaption>Flame Caller</figcaption></figure>
+      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/fervent_pyre_herald_2.jpg" alt=""><figcaption>Pyre Herald</figcaption></figure>
+      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/fervent_cinder_riders_1.jpg" alt=""><figcaption>Cinder Riders</figcaption></figure>
+      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/fervent_ember_shield_1.jpg" alt=""><figcaption>Ember Shield</figcaption></figure>
+      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/fervent_rune_caster_3.jpg" alt=""><figcaption>Rune Caster</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="forewarned" class="nation forewarned right">
+  <div class="nation__art" style="background-image:url(img/forewarned.jpg)"></div>
+  <div class="nation__body">
+    <div class="creed reveal">The wildcard</div>
+    <h2 class="reveal">The Forewarned</h2>
+    <p class="reveal">Sacrifice and experiment, whatever it costs. Bone, black iron and things that should not walk. The dark horse of the war.</p>
+    <div class="warband">
+      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/forewarned_deathless_chosen_2.jpg" alt=""><figcaption>Deathless Chosen</figcaption></figure>
+      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/forewarned_chosen_acolyte_3.jpg" alt=""><figcaption>Chosen Acolyte</figcaption></figure>
+      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/forewarned_flesh_wrought_4.jpg" alt=""><figcaption>Flesh-Wrought</figcaption></figure>
+      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/forewarned_gore_riders_2.jpg" alt=""><figcaption>Gore Riders</figcaption></figure>
+      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/forewarned_bone_archer_1.jpg" alt=""><figcaption>Bone Archer</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="install" id="install">
+  <div class="rule">✦</div>
+  <h2 class="reveal">Install once. Stay current.</h2>
+  <p class="lede reveal">We ship new things constantly. The game checks for updates when you open it, asks first,
+    and downloads only the parts that changed.</p>
+  <div class="steps">
+    <div class="step reveal"><b>1</b><h3>Download the installer</h3><p>A small setup file. No admin rights needed; it installs just for you.</p></div>
+    <div class="step reveal"><b>2</b><h3>Open Worldforge</h3><p>The first launch downloads the game itself, about 750 MB, at full quality.</p></div>
+    <div class="step reveal"><b>3</b><h3>Updates come to you</h3><p>When there's something new, the launcher offers it. Usually just a few megabytes.</p></div>
+  </div>
+  <div class="note reveal"><strong>Windows may warn you the first time.</strong> The installer isn't code-signed yet, so
     SmartScreen says the publisher is unknown. Choose <em>More info</em>, then <em>Run anyway</em>.</div>
-  <p style="margin-top:40px"><a class="download" href="https://github.com/stone-yehuda/worldforge-game/releases/latest/download/Worldforge-Setup.exe">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-    Download for Windows</a></p>
+</section>
+
+<section id="play" class="finale">
+  <h2 class="reveal">Choose your side.</h2>
+  <a class="download reveal" href="https://github.com/stone-yehuda/worldforge-game/releases/latest/download/Worldforge-Setup.exe">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+    Download free for Windows
+  </a>
 </section>
 
 <footer>
@@ -165,14 +279,66 @@
 </footer>
 
 <script>
-  // Show the latest build's name and date. Purely cosmetic: the download link works without it.
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Reveal elements as they come into view, and drift each nation's painting (parallax).
+  // A per-frame check rather than IntersectionObserver: it cannot miss a jump-scroll.
+  {
+    let pending = [...document.querySelectorAll(".reveal")];
+    const arts = still ? [] : [...document.querySelectorAll(".nation__art")];
+    if (still) pending.forEach(el => el.classList.add("in")), pending = [];
+    const tick = () => {
+      if (pending.length) pending = pending.filter(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < innerHeight * 0.92 && r.bottom > 0) { el.classList.add("in"); return false; }
+        return true;
+      });
+      for (const a of arts) {
+        const r = a.parentElement.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) continue;
+        a.style.transform = `translateY(${(r.top + r.height / 2 - innerHeight / 2) * -0.08}px)`;
+      }
+      requestAnimationFrame(tick);
+    };
+    tick();
+  }
+
+  // Embers drifting up through the hero.
+  (() => {
+    const c = document.getElementById("embers"), g = c.getContext("2d");
+    if (still) return;
+    let w, h, ps = [];
+    const size = () => { w = c.width = c.offsetWidth * devicePixelRatio; h = c.height = c.offsetHeight * devicePixelRatio; };
+    size(); addEventListener("resize", size);
+    const spawn = (y) => ({ x: Math.random() * w, y: y ?? h + 10, r: (Math.random() * 1.8 + .6) * devicePixelRatio,
+      vy: (Math.random() * .6 + .25) * devicePixelRatio, vx: (Math.random() - .5) * .3 * devicePixelRatio, life: Math.random() * Math.PI * 2 });
+    for (let i = 0; i < 90; i++) ps.push(spawn(Math.random() * h));
+    // One pre-rendered glowing sprite, stamped per ember: far cheaper than shadowBlur per particle.
+    const sprite = document.createElement("canvas"); sprite.width = sprite.height = 32;
+    const sg = sprite.getContext("2d"), grad = sg.createRadialGradient(16, 16, 0, 16, 16, 16);
+    grad.addColorStop(0, "rgba(255,240,200,1)"); grad.addColorStop(.25, "rgba(255,180,90,.9)"); grad.addColorStop(1, "rgba(255,120,40,0)");
+    sg.fillStyle = grad; sg.fillRect(0, 0, 32, 32);
+    const hero = c.parentElement;
+    const frame = () => {
+      requestAnimationFrame(frame);
+      if (hero.getBoundingClientRect().bottom < 0) return; // nothing to draw off-screen
+      g.clearRect(0, 0, w, h);
+      for (const p of ps) {
+        p.y -= p.vy; p.x += p.vx + Math.sin(p.life += .02) * .3;
+        if (p.y < -10) Object.assign(p, spawn());
+        g.globalAlpha = Math.max(0, Math.min(1, p.y / h * 1.4) * (.6 + Math.sin(p.life * 3) * .3));
+        const s = p.r * 7;
+        g.drawImage(sprite, p.x - s / 2, p.y - s / 2, s, s);
+      }
+    };
+    frame();
+  })();
+
+  // The latest build's date. Cosmetic: the download works without it.
   fetch("https://api.github.com/repos/stone-yehuda/worldforge-game/releases/latest")
     .then(r => r.ok ? r.json() : null)
-    .then(rel => {
-      if (!rel) return;
-      const when = new Date(rel.published_at).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
-      document.getElementById("latest").textContent = " · latest build " + when;
-    })
+    .then(rel => { if (rel) document.getElementById("latest").textContent = " · latest build " +
+      new Date(rel.published_at).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }); })
     .catch(() => {});
 </script>
 </body>
