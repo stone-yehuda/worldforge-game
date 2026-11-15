@@ -50,7 +50,7 @@
       radial-gradient(ellipse at 50% 45%, rgba(7,7,10,0) 30%, rgba(7,7,10,.55) 75%, rgba(7,7,10,.9) 100%),
       linear-gradient(180deg, rgba(7,7,10,.35) 0%, rgba(7,7,10,0) 25%, rgba(7,7,10,0) 70%, var(--ink) 100%);
   }
-  #embers { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+  #embers { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
   .hero__body { position: relative; z-index: 3; padding: 0 16px; max-width: 980px; }
   .eyebrow { text-transform: uppercase; letter-spacing: .32em; font-size: 13px; color: var(--gold-hi); font-weight: 600; text-shadow: 0 2px 12px rgba(0,0,0,.8); }
   h1 {
@@ -113,7 +113,7 @@
   /* Second lines arrive after the first has landed: one short line at a time. */
   .extra { font: 500 clamp(16px, 1.6vw, 20px)/1.4 Cinzel, serif; letter-spacing: .04em; color: var(--accent, var(--gold-hi)); }
   .reveal.extra { transition: opacity 1.4s ease 1.3s, transform 1.4s cubic-bezier(.2,.7,.2,1) 1.3s; }
-  .hero .tagline.extra { animation: late 1.6s ease 1.6s both; margin-top: -28px; }
+  .hero .tagline.extra { animation: late 1.6s ease 1.6s both; margin-top: -28px; max-width: none; }
   @keyframes late { from { opacity: 0; transform: translateY(12px); } }
 
   .teaser__sound { position: absolute; right: 18px; bottom: 18px; z-index: 1; display: inline-flex; align-items: center; gap: 10px;
@@ -263,11 +263,11 @@
     <p class="reveal">Magic and machine, braided.</p>
     <p class="extra reveal">Runed steel. Blessed armour. Arc-fire.</p>
     <div class="warband">
-      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/concord_arc_caster_1.jpg" alt=""><figcaption>Arc Caster</figcaption></figure>
-      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/concord_plated_cohort_4.jpg" alt=""><figcaption>Plated Cohort</figcaption></figure>
-      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/concord_sunder_hammer_2.jpg" alt=""><figcaption>Sunder Hammer</figcaption></figure>
-      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/concord_concord_shields_3.jpg" alt=""><figcaption>Concord Shields</figcaption></figure>
-      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/concord_arc_volley_3.jpg" alt=""><figcaption>Arc Volley</figcaption></figure>
+      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/concord_elian_1.jpg" alt=""><figcaption>Elian</figcaption></figure>
+      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/concord_wren_1.jpg" alt=""><figcaption>Wren</figcaption></figure>
+      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/concord_rowan_1.jpg" alt=""><figcaption>Rowan</figcaption></figure>
+      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/concord_plated_cohort_1.jpg" alt=""><figcaption>Plated Cohort</figcaption></figure>
+      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/concord_sunder_hammer_2.jpg" alt=""><figcaption>Sunder Hammer</figcaption></figure>
     </div>
   </div>
 </section>
@@ -280,11 +280,11 @@
     <p class="reveal">Order is the weapon.</p>
     <p class="extra reveal">Brass, steam and iron engines.</p>
     <div class="warband">
-      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/directive_aegis_line_1.jpg" alt=""><figcaption>Aegis Line</figcaption></figure>
-      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/directive_iron_sentinel_1.jpg" alt=""><figcaption>Iron Sentinel</figcaption></figure>
-      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/directive_bulwark_1.jpg" alt=""><figcaption>Bulwark</figcaption></figure>
-      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/directive_heavy_rifles_2.jpg" alt=""><figcaption>Heavy Rifles</figcaption></figure>
-      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/directive_breach_battery_1.jpg" alt=""><figcaption>Breach Battery</figcaption></figure>
+      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/directive_halda_1.jpg" alt=""><figcaption>Halda</figcaption></figure>
+      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/directive_auren_1.jpg" alt=""><figcaption>Auren</figcaption></figure>
+      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/directive_brogart_1.jpg" alt=""><figcaption>Brogart</figcaption></figure>
+      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/directive_iron_sentinel_1.jpg" alt=""><figcaption>Iron Sentinel</figcaption></figure>
+      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/directive_bulwark_1.jpg" alt=""><figcaption>Bulwark</figcaption></figure>
     </div>
   </div>
 </section>
@@ -297,11 +297,11 @@
     <p class="reveal">Faith turned to fire.</p>
     <p class="extra reveal">Burns bright. Hits like a storm.</p>
     <div class="warband">
-      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/fervent_flame_caller_1.jpg" alt=""><figcaption>Flame Caller</figcaption></figure>
-      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/fervent_pyre_herald_2.jpg" alt=""><figcaption>Pyre Herald</figcaption></figure>
-      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/fervent_cinder_riders_1.jpg" alt=""><figcaption>Cinder Riders</figcaption></figure>
-      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/fervent_ember_shield_1.jpg" alt=""><figcaption>Ember Shield</figcaption></figure>
-      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/fervent_rune_caster_3.jpg" alt=""><figcaption>Rune Caster</figcaption></figure>
+      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/fervent_lyr_1.jpg" alt=""><figcaption>Lyr</figcaption></figure>
+      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/fervent_vokh_1.jpg" alt=""><figcaption>Vokh</figcaption></figure>
+      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/fervent_flame_caller_1.jpg" alt=""><figcaption>Flame Caller</figcaption></figure>
+      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/fervent_conflagrant_1.jpg" alt=""><figcaption>Conflagrant</figcaption></figure>
+      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/fervent_ember_shield_1.jpg" alt=""><figcaption>Ember Shield</figcaption></figure>
     </div>
   </div>
 </section>
@@ -314,11 +314,11 @@
     <p class="reveal">Sacrifice and experiment.</p>
     <p class="extra reveal">Bone, black iron, and things that should not walk.</p>
     <div class="warband">
-      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/forewarned_deathless_chosen_2.jpg" alt=""><figcaption>Deathless Chosen</figcaption></figure>
-      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/forewarned_chosen_acolyte_3.jpg" alt=""><figcaption>Chosen Acolyte</figcaption></figure>
-      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/forewarned_flesh_wrought_4.jpg" alt=""><figcaption>Flesh-Wrought</figcaption></figure>
-      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/forewarned_gore_riders_2.jpg" alt=""><figcaption>Gore Riders</figcaption></figure>
-      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/forewarned_bone_archer_1.jpg" alt=""><figcaption>Bone Archer</figcaption></figure>
+      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/forewarned_sorne_1.jpg" alt=""><figcaption>Sorne</figcaption></figure>
+      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/forewarned_grael_1.jpg" alt=""><figcaption>Grael</figcaption></figure>
+      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/forewarned_kaelen_1.jpg" alt=""><figcaption>Kaelen</figcaption></figure>
+      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/forewarned_culled_spears_1.jpg" alt=""><figcaption>Culled Spears</figcaption></figure>
+      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/forewarned_culled_spears_2.jpg" alt=""><figcaption>Culled Spears</figcaption></figure>
     </div>
   </div>
 </section>
@@ -328,7 +328,7 @@
   <h2 class="reveal">Install once. Stay current.</h2>
   <p class="lede reveal">Updates come to you.</p>
   <div class="steps">
-    <div class="step reveal"><b>1</b><h3>Download</h3><p>A small installer. No admin needed.</p></div>
+    <div class="step reveal"><b>1</b><h3>Download</h3><p>One small installer.</p></div>
     <div class="step reveal"><b>2</b><h3>Open it</h3><p>The game downloads at full quality.</p></div>
     <div class="step reveal"><b>3</b><h3>Play</h3><p>New builds arrive when you launch.</p></div>
   </div>
