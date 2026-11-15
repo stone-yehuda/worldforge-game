@@ -80,6 +80,30 @@
   .scroll-cue { position: absolute; z-index: 3; bottom: 26px; left: 50%; translate: -50% 0; color: var(--gold-hi); opacity: .8; animation: bob 2s ease-in-out infinite; }
   @keyframes bob { 50% { transform: translateY(8px); } }
 
+  .watch { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; color: var(--gold-hi); text-decoration: none;
+    font: 600 14px Cinzel, serif; letter-spacing: .12em; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,.9); }
+  .watch svg { width: 18px; height: 18px; padding: 6px; box-sizing: content-box; border: 1px solid var(--gold); border-radius: 50%; }
+  .watch:hover { color: #fff; }
+
+  /* ---------- the teaser ---------- */
+  .teaser { padding: 48px 6vw 110px; }
+  .teaser__frame { position: relative; max-width: 1180px; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden;
+    border: 1px solid var(--line); background: #000;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.6), 0 40px 120px rgba(0,0,0,.8), 0 0 80px rgba(224,182,94,.12); }
+  .teaser__frame::after { content: ""; position: absolute; inset: 0; pointer-events: none; transition: opacity .4s;
+    background: radial-gradient(ellipse at center, rgba(7,7,10,0) 40%, rgba(7,7,10,.6) 100%); }
+  .teaser__frame.playing::after { opacity: 0; }
+  .teaser video { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .teaser__play { position: absolute; inset: 0; z-index: 1; display: grid; place-content: center; justify-items: center; gap: 18px;
+    background: none; border: 0; color: var(--gold-hi); cursor: pointer; font: 600 15px Cinzel, serif; letter-spacing: .16em; text-transform: uppercase; }
+  .teaser__play svg { box-sizing: content-box; width: 44px; height: 44px; padding: 26px 24px 26px 28px; border-radius: 50%;
+    background: rgba(7,7,10,.55); border: 2px solid var(--gold); box-shadow: 0 0 40px rgba(224,182,94,.45); backdrop-filter: blur(4px);
+    transition: transform .2s ease, box-shadow .2s ease; }
+  .teaser__play span { text-shadow: 0 2px 12px rgba(0,0,0,.95); }
+  .teaser__play:hover svg { transform: scale(1.08); box-shadow: 0 0 60px rgba(224,182,94,.7); }
+  .teaser__play:focus-visible svg { outline: 2px solid #fff; outline-offset: 4px; }
+  .teaser__frame.playing .teaser__play { display: none; }
+
   /* ---------- the question ---------- */
   .question { text-align: center; padding: 64px 16px 24px; }
   .rule { display: flex; align-items: center; gap: 18px; justify-content: center; color: var(--gold); margin-bottom: 26px; }
@@ -176,6 +200,8 @@
       Download free for Windows
     </a>
     <div class="meta">Windows 10 &amp; 11 · keeps itself up to date<span id="latest"></span></div>
+    <a class="watch" href="#teaser">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Watch the teaser</a>
   </div>
   <svg class="scroll-cue" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
 </header>
@@ -185,6 +211,18 @@
   <h2>Specialize, or fuse?</h2>
   <p>A golden age of enchanted engines ended in catastrophe. Now the Aether is running out, the borders are
     a standoff, and every nation has its own answer to the question the war is fought over.</p>
+</section>
+
+<section id="teaser" class="teaser">
+  <div class="teaser__frame reveal">
+    <video id="teaser-video" preload="metadata" playsinline poster="img/teaser_poster.jpg">
+      <source src="media/teaser.mp4" type="video/mp4">
+    </video>
+    <button class="teaser__play" type="button" aria-label="Play the Worldforge teaser">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+      <span>Watch the teaser · 0:52</span>
+    </button>
+  </div>
 </section>
 
 <section id="concord" class="nation concord">
@@ -333,6 +371,15 @@
     };
     frame();
   })();
+
+  // Teaser: a big play button over the poster; native controls once it is playing.
+  {
+    const frame = document.querySelector(".teaser__frame"), video = document.getElementById("teaser-video");
+    frame.querySelector(".teaser__play").addEventListener("click", () => {
+      frame.classList.add("playing"); video.controls = true; video.play();
+    });
+    video.addEventListener("ended", () => { frame.classList.remove("playing"); video.controls = false; video.load(); });
+  }
 
   // The latest build's date. Cosmetic: the download works without it.
   fetch("https://api.github.com/repos/stone-yehuda/worldforge-game/releases/latest")
