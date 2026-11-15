@@ -168,7 +168,28 @@
   .nation.right p { margin-left: auto; }
   h1, h2, h3, p { text-wrap: balance; }
   .nation p.extra { font: 500 clamp(17px, 1.7vw, 21px)/1.4 Cinzel, serif; color: color-mix(in srgb, var(--accent) 70%, #fff); }
-  .warband { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; max-width: 760px; }
+  /* Heroes and the army are labelled apart, and the army ends on its real size, so a visitor
+     never reads six portraits as the whole faction. Cards are the same width in both rows. */
+  .warband { max-width: 640px; }
+  .nation.right .warband { margin-left: auto; }
+  .roster { display: grid; gap: 12px; }
+  .roster.heroes { grid-template-columns: repeat(3, 1fr); width: calc(75% - 3px); }
+  .roster.army { grid-template-columns: repeat(4, 1fr); }
+  .nation.right .roster.heroes { margin-left: auto; }
+  .roster-label { display: flex; align-items: center; gap: 12px; margin: 0 0 10px; font: 600 12px/1 Inter, sans-serif; letter-spacing: .26em; text-transform: uppercase;
+    color: color-mix(in srgb, var(--accent) 80%, #fff); text-shadow: 0 2px 10px rgba(0,0,0,.9); }
+  .roster-label::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 55%, transparent), transparent); }
+  .nation.right .roster-label { flex-direction: row-reverse; }
+  .nation.right .roster-label::after { transform: scaleX(-1); }
+  .roster + .roster-label { margin-top: 26px; }
+  .unit figcaption small { display: block; margin-top: 3px; font: 500 10px/1.25 Inter, sans-serif; letter-spacing: .04em; color: color-mix(in srgb, var(--accent) 70%, #fff); }
+  .unit.more { display: grid; place-content: center; text-align: center; gap: 4px; padding: 10px;
+    background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--accent) 16%, var(--ink-2)), var(--ink-2) 75%);
+    border-style: dashed; }
+  .unit.more:hover { transform: none; }
+  .unit.more b { font: 800 clamp(30px, 3.4vw, 42px)/1 Cinzel, serif; color: #fff; text-shadow: 0 0 24px color-mix(in srgb, var(--accent) 60%, transparent); }
+  .unit.more span { font: 600 13px/1.2 Cinzel, serif; letter-spacing: .04em; }
+  .unit.more small { font: 500 11px/1.3 Inter, sans-serif; color: var(--muted); }
   .unit { margin: 0; position: relative; aspect-ratio: 3 / 4; border-radius: 4px; overflow: hidden; background: var(--ink-2);
     border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
     box-shadow: 0 14px 40px rgba(0,0,0,.6); transition: transform .25s ease, box-shadow .25s ease, border-color .25s; }
@@ -244,13 +265,15 @@
   /* ---------- reveal on scroll ---------- */
   .reveal { opacity: 0; transform: translateY(40px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
   .reveal.in { opacity: 1; transform: none; }
-  .warband .unit.reveal { transition-delay: calc(var(--i) * 90ms); }
+  .roster .unit.reveal { transition-delay: calc(var(--i) * 90ms); }
 
   @media (max-width: 900px) {
     .nation, .nation.right { justify-content: flex-start; text-align: left; padding: 100px 16px; min-height: auto; }
     .nation::before, .nation.right::before { background: linear-gradient(180deg, var(--ink) 0%, rgba(7,7,10,.45) 30%, rgba(7,7,10,.85) 70%, var(--ink) 100%); }
     .nation.right p { margin-left: 0; }
-    .warband { grid-template-columns: repeat(3, 1fr); }
+    .nation.right .warband, .nation.right .roster.heroes { margin-left: 0; }
+    .nation.right .roster-label { flex-direction: row; }
+    .nation.right .roster-label::after { transform: none; }
     .steps { grid-template-columns: 1fr; gap: 34px; }
     .specs__grid { grid-template-columns: 1fr; }
     .specs, .faq { padding-inline: 16px; }
@@ -268,8 +291,10 @@
     /* Phones: the menu drops its first link and scrolls sideways, fading at the edge it continues past. */
     .topnav__links a[href="#world"] { display: none; }
     .topnav__links { mask-image: linear-gradient(90deg, #000 85%, transparent); }
-    .warband { grid-template-columns: repeat(2, 1fr); }
-    .warband .unit:nth-child(5) { display: none; }
+    .roster { gap: 8px; }
+    .roster.heroes { width: 100%; }
+    .roster.army { grid-template-columns: repeat(2, 1fr); }
+    .unit figcaption { padding: 22px 5px 6px; font-size: 11px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .slides span { animation: none; } .slides span:first-child { opacity: 1; }
@@ -349,11 +374,19 @@
     <p class="reveal" data-i18n="concord1">Magic and machine, braided.</p>
     <p class="extra reveal" data-i18n="concord2">Runed steel. Blessed armour. Arc-fire.</p>
     <div class="warband">
-      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/concord_elian_1.jpg" alt=""><figcaption>Elian</figcaption></figure>
-      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/concord_wren_1.jpg" alt=""><figcaption>Wren</figcaption></figure>
-      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/concord_rowan_1.jpg" alt=""><figcaption>Rowan</figcaption></figure>
-      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/concord_plated_cohort_1.jpg" alt=""><figcaption>Plated Cohort</figcaption></figure>
-      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/concord_sunder_hammer_2.jpg" alt=""><figcaption>Sunder Hammer</figcaption></figure>
+      <div class="roster-label reveal" data-i18n="heroesLabel">Heroes</div>
+      <div class="roster heroes">
+        <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/concord_elian_1.jpg" alt=""><figcaption>Elian<small>Support Commander</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/concord_wren_1.jpg" alt=""><figcaption>Wren<small>Martial Vanguard</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/concord_rowan_1.jpg" alt=""><figcaption>Rowan<small>Fusion Generalist</small></figcaption></figure>
+      </div>
+      <div class="roster-label reveal" data-i18n="armyLabel">The army</div>
+      <div class="roster army">
+        <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/concord_plated_cohort_1.jpg" alt=""><figcaption>Plated Cohort<small><span data-i18n="roleShield">Shield line</span> · <span data-i18n="tier">Tier</span> 2</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/concord_arc_caster_1.jpg" alt=""><figcaption>Arc Caster<small><span data-i18n="roleBreaker">Armour-breaker</span> · <span data-i18n="tier">Tier</span> 1</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/concord_senate_lancers_1.jpg" alt=""><figcaption>Senate Lancers<small><span data-i18n="roleCav">Cavalry</span> · <span data-i18n="tier">Tier</span> 3</small></figcaption></figure>
+        <div class="unit more reveal" style="--i:3"><b>+17</b><span data-i18n="moreUnits">more units</span><small data-i18n="moreSub">across four tiers</small></div>
+      </div>
     </div>
   </div>
 </section>
@@ -366,11 +399,19 @@
     <p class="reveal" data-i18n="directive1">Order is the weapon.</p>
     <p class="extra reveal" data-i18n="directive2">Brass, steam and iron engines.</p>
     <div class="warband">
-      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/directive_halda_1.jpg" alt=""><figcaption>Halda</figcaption></figure>
-      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/directive_auren_1.jpg" alt=""><figcaption>Auren</figcaption></figure>
-      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/directive_brogart_1.jpg" alt=""><figcaption>Brogart</figcaption></figure>
-      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/directive_iron_sentinel_1.jpg" alt=""><figcaption>Iron Sentinel</figcaption></figure>
-      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/directive_bulwark_1.jpg" alt=""><figcaption>Bulwark</figcaption></figure>
+      <div class="roster-label reveal" data-i18n="heroesLabel">Heroes</div>
+      <div class="roster heroes">
+        <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/directive_auren_1.jpg" alt=""><figcaption>Auren<small>Prime Logician</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/directive_halda_1.jpg" alt=""><figcaption>Halda<small>The Maker</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/directive_brogart_1.jpg" alt=""><figcaption>Brogart<small>Runesmith</small></figcaption></figure>
+      </div>
+      <div class="roster-label reveal" data-i18n="armyLabel">The army</div>
+      <div class="roster army">
+        <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/directive_bulwark_1.jpg" alt=""><figcaption>Bulwark<small><span data-i18n="roleShield">Shield line</span> · <span data-i18n="tier">Tier</span> 3</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/directive_cannon_1.jpg" alt=""><figcaption>Cannon<small><span data-i18n="roleSiege">Siege</span> · <span data-i18n="tier">Tier</span> 2</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/directive_iron_sentinel_1.jpg" alt=""><figcaption>Iron Sentinel<small><span data-i18n="roleCapstone">Capstone</span> · <span data-i18n="tier">Tier</span> 4</small></figcaption></figure>
+        <div class="unit more reveal" style="--i:3"><b>+17</b><span data-i18n="moreUnits">more units</span><small data-i18n="moreSub">across four tiers</small></div>
+      </div>
     </div>
   </div>
 </section>
@@ -383,11 +424,19 @@
     <p class="reveal" data-i18n="fervent1">Faith turned to fire.</p>
     <p class="extra reveal" data-i18n="fervent2">Burns bright. Hits like a storm.</p>
     <div class="warband">
-      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/fervent_lyr_1.jpg" alt=""><figcaption>Lyr</figcaption></figure>
-      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/fervent_vokh_1.jpg" alt=""><figcaption>Vokh</figcaption></figure>
-      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/fervent_flame_caller_1.jpg" alt=""><figcaption>Flame Caller</figcaption></figure>
-      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/fervent_conflagrant_1.jpg" alt=""><figcaption>Conflagrant</figcaption></figure>
-      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/fervent_ember_shield_1.jpg" alt=""><figcaption>Ember Shield</figcaption></figure>
+      <div class="roster-label reveal" data-i18n="heroesLabel">Heroes</div>
+      <div class="roster heroes">
+        <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/fervent_faela_1.jpg" alt=""><figcaption>Faela<small>Lore-keeper</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/fervent_vokh_1.jpg" alt=""><figcaption>Vokh<small>Wildfire</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/fervent_lyr_1.jpg" alt=""><figcaption>Lyr<small>Beast-caller</small></figcaption></figure>
+      </div>
+      <div class="roster-label reveal" data-i18n="armyLabel">The army</div>
+      <div class="roster army">
+        <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/fervent_ember_shield_1.jpg" alt=""><figcaption>Ember Shield<small><span data-i18n="roleShield">Shield line</span> · <span data-i18n="tier">Tier</span> 1</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/fervent_flame_caller_1.jpg" alt=""><figcaption>Flame Caller<small><span data-i18n="roleRanged">Ranged</span> · <span data-i18n="tier">Tier</span> 1</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/fervent_wrath_sworn_1.jpg" alt=""><figcaption>Wrath Sworn<small><span data-i18n="roleShock">Shock infantry</span> · <span data-i18n="tier">Tier</span> 3</small></figcaption></figure>
+        <div class="unit more reveal" style="--i:3"><b>+12</b><span data-i18n="moreUnits">more units</span><small data-i18n="moreSub">across four tiers</small></div>
+      </div>
     </div>
   </div>
 </section>
@@ -400,11 +449,19 @@
     <p class="reveal" data-i18n="forewarned1">Sacrifice and experiment.</p>
     <p class="extra reveal" data-i18n="forewarned2">Bone, black iron, and things that should not walk.</p>
     <div class="warband">
-      <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/forewarned_sorne_1.jpg" alt=""><figcaption>Sorne</figcaption></figure>
-      <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/forewarned_grael_1.jpg" alt=""><figcaption>Grael</figcaption></figure>
-      <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/forewarned_kaelen_1.jpg" alt=""><figcaption>Kaelen</figcaption></figure>
-      <figure class="unit reveal" style="--i:3"><img loading="lazy" src="img/units/forewarned_culled_spears_1.jpg" alt=""><figcaption>Culled Spears</figcaption></figure>
-      <figure class="unit reveal" style="--i:4"><img loading="lazy" src="img/units/forewarned_bound_thrall_1.jpg" alt=""><figcaption>Bound Thrall</figcaption></figure>
+      <div class="roster-label reveal" data-i18n="heroesLabel">Heroes</div>
+      <div class="roster heroes">
+        <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/forewarned_sorne_1.jpg" alt=""><figcaption>Sorne<small>Calm Prophet</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/forewarned_grael_1.jpg" alt=""><figcaption>Grael<small>Fleshwright</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/forewarned_kaelen_1.jpg" alt=""><figcaption>Kaelen<small>Corrupted Wrought</small></figcaption></figure>
+      </div>
+      <div class="roster-label reveal" data-i18n="armyLabel">The army</div>
+      <div class="roster army">
+        <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/forewarned_culled_spears_1.jpg" alt=""><figcaption>Culled Spears<small><span data-i18n="roleSpear">Spears</span> · <span data-i18n="tier">Tier</span> 1</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/forewarned_plague_bombard_1.jpg" alt=""><figcaption>Plague Bombard<small><span data-i18n="roleSiege">Siege</span> · <span data-i18n="tier">Tier</span> 3</small></figcaption></figure>
+        <figure class="unit reveal" style="--i:2"><img loading="lazy" src="img/units/forewarned_chosen_acolyte_1.jpg" alt=""><figcaption>Chosen Acolyte<small><span data-i18n="roleCapstone">Capstone</span> · <span data-i18n="tier">Tier</span> 4</small></figcaption></figure>
+        <div class="unit more reveal" style="--i:3"><b>+16</b><span data-i18n="moreUnits">more units</span><small data-i18n="moreSub">across four tiers</small></div>
+      </div>
     </div>
   </div>
 </section>
