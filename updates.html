@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Worldforge Updates</title>
+<meta name="description" content="Every Worldforge build, newest first.">
+<meta property="og:title" content="Worldforge Updates">
+<meta property="og:image" content="https://stone-yehuda.github.io/worldforge-game/img/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#07070a">
+<link rel="icon" href="img/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #07070a; --text: #efe9dc; --muted: #b3ac9f; --gold: #e0b65e; --gold-hi: #ffe2a0; --line: rgba(224,182,94,.22); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ink); color: var(--text); font: 16px/1.6 Inter, system-ui, sans-serif; }
+  a { color: inherit; }
+  .banner { position: relative; padding: 110px 16px 70px; text-align: center; isolation: isolate; overflow: hidden; }
+  .banner::before { content: ""; position: absolute; inset: 0; z-index: -2; background: url(img/directive.jpg) center 40% / cover; }
+  .banner::after { content: ""; position: absolute; inset: 0; z-index: -1;
+    background: radial-gradient(ellipse at center, rgba(7,7,10,.35), rgba(7,7,10,.85) 80%), linear-gradient(180deg, transparent 60%, var(--ink)); }
+  .back { position: absolute; top: 20px; left: 20px; text-decoration: none; font: 600 13px Cinzel, serif; letter-spacing: .08em; color: var(--gold-hi);
+    padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: rgba(7,7,10,.55); backdrop-filter: blur(4px); }
+  .back:hover { color: #fff; }
+  .lang { position: absolute; top: 20px; right: 20px; }
+  .lang select { appearance: none; background: rgba(7,7,10,.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23ffe2a0'/%3E%3C/svg%3E") no-repeat right 12px center;
+    color: var(--gold-hi); border: 1px solid var(--line); border-radius: 999px; padding: 8px 32px 8px 14px; font: 600 12px Inter, sans-serif; cursor: pointer; }
+  .lang option { background: #111117; color: #efe9dc; }
+  .back:focus-visible, .lang select:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .brand { font: 900 clamp(22px, 3vw, 30px)/1 "Cinzel Decorative", serif; color: var(--gold-hi); text-decoration: none; }
+  h1 { font: 700 clamp(36px, 6vw, 68px)/1.05 Cinzel, serif; margin: 14px 0 12px; text-shadow: 0 4px 30px rgba(0,0,0,.9); }
+  .lede { margin: 0 auto; max-width: 52ch; color: #d8d2c4; text-shadow: 0 2px 12px rgba(0,0,0,.9); text-wrap: balance; }
+  main { max-width: 820px; margin: 0 auto; padding: 10px 16px 100px; }
+  .build { position: relative; padding: 22px 26px 22px; margin-bottom: 14px; border: 1px solid var(--line); border-radius: 4px; background: linear-gradient(180deg, #15151d, #0e0e14); }
+  .build header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 8px; }
+  .build h2 { margin: 0; font: 700 22px Cinzel, serif; }
+  .build .badge { font: 700 11px Inter, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #1a1206; background: var(--gold); padding: 3px 9px; border-radius: 999px; }
+  .build .plat { color: var(--muted); font-size: 13px; }
+  .build ul { margin: 0; padding-left: 20px; color: #d8d2c4; }
+  .build li + li { margin-top: 4px; }
+  .build.latest { border-color: var(--gold); box-shadow: 0 0 40px rgba(224,182,94,.12); }
+  .status { text-align: center; color: var(--muted); }
+  footer { text-align: center; padding: 0 16px 56px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<header class="banner">
+  <a class="back" href="./">← <span data-i18n="updBack">Back to Worldforge</span></a>
+  <label class="lang"><span hidden>Language</span>
+    <select id="lang" aria-label="Language">
+      <option value="en">English</option><option value="es">Español</option>
+      <option value="pt">Português</option><option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+    </select>
+  </label>
+  <a class="brand" href="./">Worldforge</a>
+  <h1 data-i18n="updTitle">Updates</h1>
+  <p class="lede" data-i18n="updLede">Every build, newest first. An installed game updates itself.</p>
+</header>
+
+<main id="builds"><p class="status">…</p></main>
+<footer><a href="https://github.com/stone-yehuda/worldforge-game/releases">GitHub releases</a></footer>
+
+<script src="i18n.js"></script>
+<script>
+  // The list is the public GitHub releases; the words are site/updates.json, keyed by tag.
+  // A release with no entry still appears, with a generic line, so publishing never breaks this.
+  let releases = null, notes = {}, failed = false;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const platforms = rel => [
+    rel.assets.some(a => a.name === "manifest-windows.json") && "Windows",
+    rel.assets.some(a => a.name === "manifest-macos.json") && "Mac",
+  ].filter(Boolean).join(" · ");
+  const render = () => {
+    const main = document.getElementById("builds");
+    if (failed) { main.innerHTML = `<p class="status"><a href="https://github.com/stone-yehuda/worldforge-game/releases">${esc(t("updError"))}</a></p>`; return; }
+    if (!releases) return;
+    main.innerHTML = releases.map((rel, i) => {
+      const date = new Date(rel.published_at).toLocaleDateString(lang, { year: "numeric", month: "long", day: "numeric" });
+      const lines = notes[rel.tag_name] || [t("updNone")];
+      return `<article class="build${i ? "" : " latest"}"><header><h2>${esc(date)}</h2>` +
+        (i ? "" : `<span class="badge">${esc(t("updLatest"))}</span>`) +
+        `<span class="plat">${esc(platforms(rel))}</span></header>` +
+        `<ul>${lines.map(l => `<li>${esc(l)}</li>`).join("")}</ul></article>`;
+    }).join("");
+  };
+  langHooks.push(render);
+  Promise.all([
+    fetch("https://api.github.com/repos/stone-yehuda/worldforge-game/releases?per_page=30").then(r => { if (!r.ok) throw r; return r.json(); }),
+    fetch("updates.json", { cache: "no-cache" }).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+  ]).then(([rels, n]) => {
+    releases = rels.filter(r => !r.draft && !r.prerelease)
+      .sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+    notes = n; render();
+  }).catch(() => { failed = true; render(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "_about": "Player-facing patch notes, keyed by release tag, newest first. Add an entry when a build is published; a release with no entry shows a generic line. English only.",
+  "build-20261115-0243": [
+    "Worldforge now runs on Mac, and updates itself the same way the Windows version does.",
+    "New portrait art for two Fervent units."
+  ],
+  "build-20261114-1733": [
+    "Install once, then the game keeps itself up to date.",
+    "Updates ask before downloading, and fetch only the parts that changed."
+  ]
+}
