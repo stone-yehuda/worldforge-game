@@ -125,6 +125,13 @@
   .teaser__sound[aria-pressed="true"] .cross { display: none; }
   .teaser__sound:hover { background: rgba(7,7,10,.85); color: #fff; }
 
+  .lang { position: absolute; top: 18px; right: 20px; z-index: 4; }
+  .lang select { appearance: none; background: rgba(7,7,10,.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23ffe2a0'/%3E%3C/svg%3E") no-repeat right 12px center;
+    color: var(--gold-hi); border: 1px solid var(--line); border-radius: 999px; padding: 8px 32px 8px 14px;
+    font: 600 12px Inter, sans-serif; letter-spacing: .08em; cursor: pointer; backdrop-filter: blur(4px); }
+  .lang select:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .lang option { background: #111117; color: #efe9dc; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   /* ---------- the question ---------- */
   .question { text-align: center; padding: 64px 16px 24px; }
   .rule { display: flex; align-items: center; gap: 18px; justify-content: center; color: var(--gold); margin-bottom: 26px; }
@@ -215,33 +222,40 @@
 <body>
 
 <header class="hero">
+  <label class="lang"><span class="sr">Language</span>
+    <select id="lang" aria-label="Language">
+      <option value="en">English</option><option value="es">Español</option>
+      <option value="pt">Português</option><option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+    </select>
+  </label>
   <div class="slides" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
   <canvas id="embers" aria-hidden="true"></canvas>
   <div class="hero__body">
-    <div class="eyebrow">A science-fantasy real-time strategy game</div>
+    <div class="eyebrow" data-i18n="eyebrow">A science-fantasy real-time strategy game</div>
     <h1>Worldforge</h1>
-    <p class="tagline">Magic and machine, made to work together.</p>
-    <p class="tagline extra">Four nations went to war over how.</p>
+    <p class="tagline" data-i18n="tag1">Magic and machine, made to work together.</p>
+    <p class="tagline extra" data-i18n="tag2">Four nations went to war over how.</p>
     <div class="downloads">
     <a class="download" href="https://github.com/stone-yehuda/worldforge-game/releases/latest/download/Worldforge-Setup.exe">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5.5 10.5 4.4v7.1H3zM11.5 4.3 21 3v8.5h-9.5zM3 12.5h7.5v7.1L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg>
-      <span>Download for Windows</span>
+      <span data-i18n="dlWin">Download for Windows</span>
     </a>
     <a class="download download--mac soon" href="https://github.com/stone-yehuda/worldforge-game/releases/latest/download/Worldforge-macOS.zip" aria-disabled="true">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9s-1.9-.9-3.2-.8c-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.4-1-2.4-3.9zM14 5.4c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></svg>
-      <span>Download for Mac</span><small>coming soon</small>
+      <span data-i18n="dlMac">Download for Mac</span><small data-i18n="soon">coming soon</small>
     </a>
   </div>
-    <div class="meta">Windows 10 &amp; 11 · keeps itself up to date<span id="latest"></span></div>
+    <div class="meta"><span data-i18n="metaWin">Windows 10 &amp; 11</span><span class="mac-only" hidden> · <span data-i18n="metaMac">macOS 13 or newer</span></span> · <span data-i18n="metaUpd">keeps itself up to date</span><span id="latest"></span></div>
   </div>
   <svg class="scroll-cue" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
 </header>
 
 <section class="question reveal">
   <div class="rule">✦</div>
-  <h2>Specialize, or fuse?</h2>
-  <p>The Aether is running out.</p>
-  <p class="extra reveal">Every nation has its own answer.</p>
+  <h2 data-i18n="qTitle">Specialize, or fuse?</h2>
+  <p data-i18n="q1">The Aether is running out.</p>
+  <p class="extra reveal" data-i18n="q2">Every nation has its own answer.</p>
 </section>
 
 <section id="teaser" class="teaser">
@@ -251,7 +265,7 @@
     </video>
     <button class="teaser__sound" type="button" aria-pressed="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="waves" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="cross" d="m16 9 6 6m0-6-6 6"/></svg>
-      <span>Sound on</span>
+      <span data-i18n="soundOn">Sound on</span>
     </button>
   </div>
 </section>
@@ -259,10 +273,10 @@
 <section id="concord" class="nation concord">
   <div class="nation__art" style="background-image:url(img/army_concord.jpg)"></div>
   <div class="nation__body">
-    <div class="creed reveal">Synergy</div>
+    <div class="creed reveal" data-i18n="creedConcord">Synergy</div>
     <h2 class="reveal">The Concord</h2>
-    <p class="reveal">Magic and machine, braided.</p>
-    <p class="extra reveal">Runed steel. Blessed armour. Arc-fire.</p>
+    <p class="reveal" data-i18n="concord1">Magic and machine, braided.</p>
+    <p class="extra reveal" data-i18n="concord2">Runed steel. Blessed armour. Arc-fire.</p>
     <div class="warband">
       <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/concord_elian_1.jpg" alt=""><figcaption>Elian</figcaption></figure>
       <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/concord_wren_1.jpg" alt=""><figcaption>Wren</figcaption></figure>
@@ -276,10 +290,10 @@
 <section id="directive" class="nation directive right">
   <div class="nation__art" style="background-image:url(img/army_directive.jpg)"></div>
   <div class="nation__body">
-    <div class="creed reveal">Tech supremacy</div>
+    <div class="creed reveal" data-i18n="creedDirective">Tech supremacy</div>
     <h2 class="reveal">The Directive</h2>
-    <p class="reveal">Order is the weapon.</p>
-    <p class="extra reveal">Brass, steam and iron engines.</p>
+    <p class="reveal" data-i18n="directive1">Order is the weapon.</p>
+    <p class="extra reveal" data-i18n="directive2">Brass, steam and iron engines.</p>
     <div class="warband">
       <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/directive_halda_1.jpg" alt=""><figcaption>Halda</figcaption></figure>
       <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/directive_auren_1.jpg" alt=""><figcaption>Auren</figcaption></figure>
@@ -293,10 +307,10 @@
 <section id="fervent" class="nation fervent">
   <div class="nation__art" style="background-image:url(img/army_fervent.jpg)"></div>
   <div class="nation__body">
-    <div class="creed reveal">Magic</div>
+    <div class="creed reveal" data-i18n="creedFervent">Magic</div>
     <h2 class="reveal">The Fervent</h2>
-    <p class="reveal">Faith turned to fire.</p>
-    <p class="extra reveal">Burns bright. Hits like a storm.</p>
+    <p class="reveal" data-i18n="fervent1">Faith turned to fire.</p>
+    <p class="extra reveal" data-i18n="fervent2">Burns bright. Hits like a storm.</p>
     <div class="warband">
       <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/fervent_lyr_1.jpg" alt=""><figcaption>Lyr</figcaption></figure>
       <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/fervent_vokh_1.jpg" alt=""><figcaption>Vokh</figcaption></figure>
@@ -310,10 +324,10 @@
 <section id="forewarned" class="nation forewarned right">
   <div class="nation__art" style="background-image:url(img/army_forewarned.jpg)"></div>
   <div class="nation__body">
-    <div class="creed reveal">The wildcard</div>
+    <div class="creed reveal" data-i18n="creedForewarned">The wildcard</div>
     <h2 class="reveal">The Forewarned</h2>
-    <p class="reveal">Sacrifice and experiment.</p>
-    <p class="extra reveal">Bone, black iron, and things that should not walk.</p>
+    <p class="reveal" data-i18n="forewarned1">Sacrifice and experiment.</p>
+    <p class="extra reveal" data-i18n="forewarned2">Bone, black iron, and things that should not walk.</p>
     <div class="warband">
       <figure class="unit reveal" style="--i:0"><img loading="lazy" src="img/units/forewarned_sorne_1.jpg" alt=""><figcaption>Sorne</figcaption></figure>
       <figure class="unit reveal" style="--i:1"><img loading="lazy" src="img/units/forewarned_grael_1.jpg" alt=""><figcaption>Grael</figcaption></figure>
@@ -326,36 +340,66 @@
 
 <section class="install" id="install">
   <div class="rule">✦</div>
-  <h2 class="reveal">Install once. Stay current.</h2>
-  <p class="lede reveal">Updates come to you.</p>
+  <h2 class="reveal" data-i18n="installTitle">Install once. Stay current.</h2>
+  <p class="lede reveal" data-i18n="installLede">Updates come to you.</p>
   <div class="steps">
-    <div class="step reveal"><b>1</b><h3>Download</h3><p>One small installer.</p></div>
-    <div class="step reveal"><b>2</b><h3>Open it</h3><p>The game downloads at full quality.</p></div>
-    <div class="step reveal"><b>3</b><h3>Play</h3><p>New builds arrive when you launch.</p></div>
+    <div class="step reveal"><b>1</b><h3 data-i18n="step1h">Download</h3><p data-i18n="step1p">One small installer.</p></div>
+    <div class="step reveal"><b>2</b><h3 data-i18n="step2h">Open it</h3><p data-i18n="step2p">The game downloads at full quality.</p></div>
+    <div class="step reveal"><b>3</b><h3 data-i18n="step3h">Play</h3><p data-i18n="step3p">New builds arrive when you launch.</p></div>
   </div>
-  <div class="note reveal">Windows may warn you once: choose <em>More info</em>, then <em>Run anyway</em>.</div>
+  <div class="note reveal" data-i18n="note">Windows may warn you once: choose <em>More info</em>, then <em>Run anyway</em>.</div>
+  <div class="note reveal mac-only" hidden data-i18n="macNote">On a Mac, unzip and open <em>Worldforge</em>. If macOS blocks it, open <em>System Settings</em> → <em>Privacy &amp; Security</em> and choose <em>Open Anyway</em>. The zip's README has the Terminal fix if macOS calls it damaged.</div>
 </section>
 
 <section id="play" class="finale">
-  <h2 class="reveal">Choose your side.</h2>
+  <h2 class="reveal" data-i18n="finale">Choose your side.</h2>
   <div class="downloads reveal">
     <a class="download" href="https://github.com/stone-yehuda/worldforge-game/releases/latest/download/Worldforge-Setup.exe">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5.5 10.5 4.4v7.1H3zM11.5 4.3 21 3v8.5h-9.5zM3 12.5h7.5v7.1L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg>
-      <span>Download for Windows</span>
+      <span data-i18n="dlWin">Download for Windows</span>
     </a>
     <a class="download download--mac soon" href="https://github.com/stone-yehuda/worldforge-game/releases/latest/download/Worldforge-macOS.zip" aria-disabled="true">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9s-1.9-.9-3.2-.8c-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.4-1-2.4-3.9zM14 5.4c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></svg>
-      <span>Download for Mac</span><small>coming soon</small>
+      <span data-i18n="dlMac">Download for Mac</span><small data-i18n="soon">coming soon</small>
     </a>
   </div>
 </section>
 
 <footer>
-  <span>Worldforge is an early prototype, so expect rough edges. Bugs and reactions are welcome.</span>
-  <a href="https://github.com/stone-yehuda/worldforge-game/releases">All builds and release notes</a>
+  <span data-i18n="footer">Worldforge is an early prototype, so expect rough edges. Bugs and reactions are welcome.</span>
+  <a href="https://github.com/stone-yehuda/worldforge-game/releases" data-i18n="allBuilds">All builds and release notes</a>
 </footer>
 
 <script>
+  // Languages: picked from the visitor's browser languages (es-*, pt-*, fr-*, de-*), never
+  // from their location, so nothing about them is looked up or sent anywhere. The picker
+  // overrides it and is remembered on this device.
+  const STRINGS = {"en": {"eyebrow": "A science-fantasy real-time strategy game", "tag1": "Magic and machine, made to work together.", "tag2": "Four nations went to war over how.", "dlWin": "Download for Windows", "dlMac": "Download for Mac", "soon": "coming soon", "meta": "Windows 10 &amp; 11 · keeps itself up to date", "qTitle": "Specialize, or fuse?", "q1": "The Aether is running out.", "q2": "Every nation has its own answer.", "soundOn": "Sound on", "creedConcord": "Synergy", "concord1": "Magic and machine, braided.", "concord2": "Runed steel. Blessed armour. Arc-fire.", "creedDirective": "Tech supremacy", "directive1": "Order is the weapon.", "directive2": "Brass, steam and iron engines.", "creedFervent": "Magic", "fervent1": "Faith turned to fire.", "fervent2": "Burns bright. Hits like a storm.", "creedForewarned": "The wildcard", "forewarned1": "Sacrifice and experiment.", "forewarned2": "Bone, black iron, and things that should not walk.", "installTitle": "Install once. Stay current.", "installLede": "Updates come to you.", "step1h": "Download", "step1p": "One small installer.", "step2h": "Open it", "step2p": "The game downloads at full quality.", "step3h": "Play", "step3p": "New builds arrive when you launch.", "note": "Windows may warn you once: choose <em>More info</em>, then <em>Run anyway</em>.", "finale": "Choose your side.", "footer": "Worldforge is an early prototype, so expect rough edges. Bugs and reactions are welcome.", "allBuilds": "All builds and release notes", "soundOff": "Sound off", "latest": "latest build", "metaWin": "Windows 10 &amp; 11", "metaMac": "macOS 13 or newer", "metaUpd": "keeps itself up to date", "macNote": "On a Mac, unzip and open <em>Worldforge</em>. If macOS blocks it, open <em>System Settings</em> → <em>Privacy &amp; Security</em> and choose <em>Open Anyway</em>. The zip's README has the Terminal fix if macOS calls it damaged."}, "es": {"eyebrow": "Un juego de estrategia en tiempo real de ciencia fantástica", "tag1": "Magia y máquina, hechas para trabajar juntas.", "tag2": "Cuatro naciones fueron a la guerra por cómo hacerlo.", "dlWin": "Descargar para Windows", "dlMac": "Descargar para Mac", "soon": "próximamente", "meta": "Windows 10 y 11 · se actualiza solo", "qTitle": "¿Especializarse o fusionar?", "q1": "El Éter se está agotando.", "q2": "Cada nación tiene su propia respuesta.", "soundOn": "Activar sonido", "soundOff": "Silenciar", "creedConcord": "Sinergia", "concord1": "Magia y máquina, entrelazadas.", "concord2": "Acero rúnico. Armadura bendita. Fuego arcano.", "creedDirective": "Supremacía tecnológica", "directive1": "El orden es el arma.", "directive2": "Latón, vapor y motores de hierro.", "creedFervent": "Magia", "fervent1": "La fe hecha fuego.", "fervent2": "Arde con fuerza. Golpea como una tormenta.", "creedForewarned": "El comodín", "forewarned1": "Sacrificio y experimento.", "forewarned2": "Hueso, hierro negro y cosas que no deberían caminar.", "installTitle": "Instala una vez. Siempre al día.", "installLede": "Las actualizaciones llegan solas.", "step1h": "Descarga", "step1p": "Un instalador pequeño.", "step2h": "Ábrelo", "step2p": "El juego se descarga en máxima calidad.", "step3h": "Juega", "step3p": "Las nuevas versiones llegan al abrirlo.", "note": "Windows puede avisarte una vez: elige <em>Más información</em> y luego <em>Ejecutar de todas formas</em>.", "finale": "Elige tu bando.", "footer": "Worldforge es un prototipo temprano: habrá asperezas. Tus comentarios y errores encontrados son bienvenidos.", "allBuilds": "Todas las versiones y notas", "latest": "última versión", "metaWin": "Windows 10 y 11", "metaMac": "macOS 13 o posterior", "metaUpd": "se actualiza solo", "macNote": "En Mac, descomprime y abre <em>Worldforge</em>. Si macOS lo bloquea, abre <em>Ajustes del Sistema</em> → <em>Privacidad y seguridad</em> y elige <em>Abrir igualmente</em>. El README del zip explica qué hacer si macOS dice que está dañado."}, "pt": {"eyebrow": "Um jogo de estratégia em tempo real de ficção científica e fantasia", "tag1": "Magia e máquina, feitas para trabalhar juntas.", "tag2": "Quatro nações foram à guerra por causa disso.", "dlWin": "Baixar para Windows", "dlMac": "Baixar para Mac", "soon": "em breve", "meta": "Windows 10 e 11 · atualiza-se sozinho", "qTitle": "Especializar ou fundir?", "q1": "O Éter está acabando.", "q2": "Cada nação tem a sua resposta.", "soundOn": "Ativar som", "soundOff": "Silenciar", "creedConcord": "Sinergia", "concord1": "Magia e máquina, entrelaçadas.", "concord2": "Aço rúnico. Armadura abençoada. Fogo arcano.", "creedDirective": "Supremacia tecnológica", "directive1": "A ordem é a arma.", "directive2": "Latão, vapor e motores de ferro.", "creedFervent": "Magia", "fervent1": "Fé transformada em fogo.", "fervent2": "Arde forte. Ataca como uma tempestade.", "creedForewarned": "O curinga", "forewarned1": "Sacrifício e experimento.", "forewarned2": "Osso, ferro negro e coisas que não deveriam andar.", "installTitle": "Instale uma vez. Sempre atualizado.", "installLede": "As atualizações chegam até você.", "step1h": "Baixe", "step1p": "Um instalador pequeno.", "step2h": "Abra", "step2p": "O jogo é baixado em qualidade máxima.", "step3h": "Jogue", "step3p": "Novas versões chegam ao abrir.", "note": "O Windows pode avisar uma vez: escolha <em>Mais informações</em> e depois <em>Executar assim mesmo</em>.", "finale": "Escolha o seu lado.", "footer": "Worldforge é um protótipo inicial, então espere arestas. Comentários e bugs são bem-vindos.", "allBuilds": "Todas as versões e notas", "latest": "versão mais recente", "metaWin": "Windows 10 e 11", "metaMac": "macOS 13 ou mais recente", "metaUpd": "atualiza-se sozinho", "macNote": "No Mac, descompacte e abra o <em>Worldforge</em>. Se o macOS bloquear, abra <em>Ajustes do Sistema</em> → <em>Privacidade e Segurança</em> e escolha <em>Abrir Mesmo Assim</em>. O README do zip explica o que fazer se o macOS disser que está danificado."}, "fr": {"eyebrow": "Un jeu de stratégie en temps réel de science-fantasy", "tag1": "La magie et la machine, faites pour s'unir.", "tag2": "Quatre nations sont entrées en guerre sur la manière.", "dlWin": "Télécharger pour Windows", "dlMac": "Télécharger pour Mac", "soon": "bientôt", "meta": "Windows 10 et 11 · se met à jour tout seul", "qTitle": "Se spécialiser, ou fusionner ?", "q1": "L'Éther s'épuise.", "q2": "Chaque nation a sa réponse.", "soundOn": "Activer le son", "soundOff": "Couper le son", "creedConcord": "Synergie", "concord1": "Magie et machine, entrelacées.", "concord2": "Acier runique. Armure bénie. Feu arcanique.", "creedDirective": "Suprématie technologique", "directive1": "L'ordre est une arme.", "directive2": "Laiton, vapeur et machines de fer.", "creedFervent": "Magie", "fervent1": "La foi devenue feu.", "fervent2": "Brûle vivement. Frappe comme la tempête.", "creedForewarned": "L'inconnue", "forewarned1": "Sacrifice et expérience.", "forewarned2": "Os, fer noir, et des choses qui ne devraient pas marcher.", "installTitle": "Installez une fois. Toujours à jour.", "installLede": "Les mises à jour viennent à vous.", "step1h": "Téléchargez", "step1p": "Un petit installateur.", "step2h": "Ouvrez-le", "step2p": "Le jeu se télécharge en pleine qualité.", "step3h": "Jouez", "step3p": "Les nouvelles versions arrivent au lancement.", "note": "Windows peut vous avertir une fois : choisissez <em>Informations complémentaires</em>, puis <em>Exécuter quand même</em>.", "finale": "Choisissez votre camp.", "footer": "Worldforge est un prototype précoce : attendez-vous à des aspérités. Vos retours et bugs sont les bienvenus.", "allBuilds": "Toutes les versions et notes", "latest": "dernière version", "metaWin": "Windows 10 et 11", "metaMac": "macOS 13 ou plus récent", "metaUpd": "se met à jour tout seul", "macNote": "Sur Mac, décompressez et ouvrez <em>Worldforge</em>. Si macOS le bloque, ouvrez <em>Réglages Système</em> → <em>Confidentialité et sécurité</em> et choisissez <em>Ouvrir quand même</em>. Le README du zip explique quoi faire si macOS le dit endommagé."}, "de": {"eyebrow": "Ein Science-Fantasy-Echtzeitstrategiespiel", "tag1": "Magie und Maschine, geschaffen füreinander.", "tag2": "Vier Nationen zogen in den Krieg über das Wie.", "dlWin": "Für Windows herunterladen", "dlMac": "Für Mac herunterladen", "soon": "demnächst", "meta": "Windows 10 und 11 · aktualisiert sich selbst", "qTitle": "Spezialisieren oder verschmelzen?", "q1": "Der Äther geht zur Neige.", "q2": "Jede Nation hat ihre eigene Antwort.", "soundOn": "Ton an", "soundOff": "Ton aus", "creedConcord": "Synergie", "concord1": "Magie und Maschine, verflochten.", "concord2": "Runenstahl. Gesegnete Rüstung. Arkanfeuer.", "creedDirective": "Technische Überlegenheit", "directive1": "Ordnung ist die Waffe.", "directive2": "Messing, Dampf und eiserne Maschinen.", "creedFervent": "Magie", "fervent1": "Glaube, zu Feuer geworden.", "fervent2": "Brennt hell. Schlägt zu wie ein Sturm.", "creedForewarned": "Der Joker", "forewarned1": "Opfer und Experiment.", "forewarned2": "Knochen, schwarzes Eisen und Dinge, die nicht gehen sollten.", "installTitle": "Einmal installieren. Immer aktuell.", "installLede": "Updates kommen von selbst.", "step1h": "Herunterladen", "step1p": "Ein kleiner Installer.", "step2h": "Öffnen", "step2p": "Das Spiel lädt in voller Qualität.", "step3h": "Spielen", "step3p": "Neue Versionen kommen beim Start.", "note": "Windows warnt vielleicht einmal: Wähle <em>Weitere Informationen</em> und dann <em>Trotzdem ausführen</em>.", "finale": "Wähle deine Seite.", "footer": "Worldforge ist ein früher Prototyp, also rechne mit Ecken und Kanten. Feedback und Fehlerberichte sind willkommen.", "allBuilds": "Alle Versionen und Notizen", "latest": "neueste Version", "metaWin": "Windows 10 und 11", "metaMac": "macOS 13 oder neuer", "metaUpd": "aktualisiert sich selbst", "macNote": "Auf dem Mac entpacken und <em>Worldforge</em> öffnen. Blockiert macOS es, öffne <em>Systemeinstellungen</em> → <em>Datenschutz &amp; Sicherheit</em> und wähle <em>Dennoch öffnen</em>. Die README im Zip erklärt, was zu tun ist, wenn macOS es als beschädigt meldet."}};
+  const pickLang = () => {
+    try { const saved = localStorage.getItem("wf-lang"); if (saved && STRINGS[saved]) return saved; } catch (e) {}
+    for (const l of navigator.languages || [navigator.language || "en"]) {
+      const base = String(l).slice(0, 2).toLowerCase();
+      if (STRINGS[base]) return base;
+    }
+    return "en";
+  };
+  let lang = pickLang();
+  const t = key => (STRINGS[lang] && STRINGS[lang][key]) || STRINGS.en[key] || "";
+  const applyLang = () => {
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+    document.getElementById("lang").value = lang;
+    const sound = document.querySelector(".teaser__sound span");
+    if (sound) sound.textContent = t(document.getElementById("teaser-video").muted ? "soundOn" : "soundOff");
+    if (window.wfLatestDate) document.getElementById("latest").textContent = " · " + t("latest") + " " + window.wfLatestDate;
+  };
+  document.getElementById("lang").addEventListener("change", e => {
+    lang = e.target.value;
+    try { localStorage.setItem("wf-lang", lang); } catch (err) {}
+    applyLang();
+  });
+  applyLang();
+
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Reveal elements as they come into view, and drift each nation's painting (parallax).
@@ -418,7 +462,7 @@
     sound.addEventListener("click", () => {
       video.muted = !video.muted;
       sound.setAttribute("aria-pressed", String(!video.muted));
-      sound.querySelector("span").textContent = video.muted ? "Sound on" : "Sound off";
+      sound.querySelector("span").textContent = t(video.muted ? "soundOn" : "soundOff");
       if (!video.muted) video.play();
     });
     const check = () => {
@@ -439,14 +483,16 @@
       document.querySelectorAll(".download--mac").forEach(b => {
         b.classList.remove("soon"); b.removeAttribute("aria-disabled"); b.querySelector("small").remove();
       });
+      document.querySelectorAll(".mac-only").forEach(e => { e.hidden = false; });
     })
     .catch(() => {});
 
   // The latest build's date. Cosmetic: the download works without it.
   fetch("https://api.github.com/repos/stone-yehuda/worldforge-game/releases/latest")
     .then(r => r.ok ? r.json() : null)
-    .then(rel => { if (rel) document.getElementById("latest").textContent = " · latest build " +
-      new Date(rel.published_at).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }); })
+    .then(rel => { if (!rel) return;
+      window.wfLatestDate = new Date(rel.published_at).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+      document.getElementById("latest").textContent = " · " + t("latest") + " " + window.wfLatestDate; })
     .catch(() => {});
 </script>
 </body>
